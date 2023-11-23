@@ -1,7 +1,9 @@
 package com.czb.opengl_es.gl.sample
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.opengl.GLES32.GL_ARRAY_BUFFER
 import android.opengl.GLES32.GL_CLAMP_TO_BORDER
 import android.opengl.GLES32.GL_COLOR_BUFFER_BIT
@@ -11,7 +13,6 @@ import android.opengl.GLES32.GL_LINEAR
 import android.opengl.GLES32.GL_LINEAR_MIPMAP_LINEAR
 import android.opengl.GLES32.GL_STATIC_DRAW
 import android.opengl.GLES32.GL_TEXTURE0
-import android.opengl.GLES32.GL_TEXTURE1
 import android.opengl.GLES32.GL_TEXTURE_2D
 import android.opengl.GLES32.GL_TEXTURE_BORDER_COLOR
 import android.opengl.GLES32.GL_TEXTURE_MAG_FILTER
@@ -37,10 +38,13 @@ import android.opengl.GLUtils
 import com.czb.opengl_es.R
 import com.czb.opengl_es.gl.BaseRender
 import com.czb.opengl_es.gl.Shader
+import com.czb.opengl_es.gl.utils.Orientation
+import com.czb.opengl_es.gl.utils.reverse
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
+
 
 class TextureRenderer(context: Context) : BaseRender(context) {
 
@@ -52,10 +56,21 @@ class TextureRenderer(context: Context) : BaseRender(context) {
   override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
     val vertices = floatArrayOf(
       //  -- 位置 --       -- 颜色 --      -- 纹理坐标 --
-      0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.2f, 0.0f,  // 右上
-      0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.2f, 1.2f,  // 右下
-      -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.2f,  // 左下
-      -0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f // 左上
+      0.5f, 0.5f, 0.0f,
+      1.0f, 0.0f, 0.0f,
+      1.75f, 1.75f,  // 右上
+
+      0.5f, -0.5f, 0.0f,
+      0.0f, 1.0f, 0.0f,
+      1.75f, -0.25f,  // 右下
+
+      -0.5f, -0.5f, 0.0f,
+      0.0f, 0.0f, 1.0f,
+      -0.25f, -0.25f,  // 左下
+
+      -0.5f, 0.5f, 0.0f,
+      1.0f, 1.0f, 0.0f,
+      -0.25f, 1.75f // 左上
     )
 
     val indices = intArrayOf(
@@ -115,21 +130,9 @@ class TextureRenderer(context: Context) : BaseRender(context) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
     // bitmap 解码
-    val bitmap1 = BitmapFactory.decodeResource(context.resources, R.drawable.wooden_container)
-    GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap1, 0)
-    glGenerateMipmap(GL_TEXTURE_2D)
-
-    texture2 = createAndBindTexture2D()
-    // 环绕方式
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER)
-    glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor, 0)
-    // 采样方式
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
-    // bitmap 解码
-    val bitmap2 = BitmapFactory.decodeResource(context.resources, R.drawable.awesomeface)
-    GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap2, 0)
+    val bitmap1 = BitmapFactory.decodeResource(context.resources, R.drawable.awesomeface)
+    val bitmap1Reverse = bitmap1.reverse(Orientation.Vertical)
+    GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap1Reverse, 0)
     glGenerateMipmap(GL_TEXTURE_2D)
   }
 

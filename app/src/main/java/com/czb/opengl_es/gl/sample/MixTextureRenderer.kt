@@ -37,6 +37,8 @@ import android.opengl.GLUtils
 import com.czb.opengl_es.R
 import com.czb.opengl_es.gl.BaseRender
 import com.czb.opengl_es.gl.Shader
+import com.czb.opengl_es.gl.utils.Orientation
+import com.czb.opengl_es.gl.utils.reverse
 import com.czb.opengl_es.log
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
@@ -54,10 +56,21 @@ class MixTextureRenderer(context: Context) : BaseRender(context) {
   override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
     val vertices = floatArrayOf(
       //  -- 位置 --       -- 颜色 --      -- 纹理坐标 --
-      0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.2f, 0.0f,  // 右上
-      0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.2f, 1.2f,  // 右下
-      -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.2f,  // 左下
-      -0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f // 左上
+      0.5f, 0.5f, 0.0f,
+      1.0f, 0.0f, 0.0f,
+      1.75f, 1.75f,  // 右上
+
+      0.5f, -0.5f, 0.0f,
+      0.0f, 1.0f, 0.0f,
+      1.75f, -0.25f,  // 右下
+
+      -0.5f, -0.5f, 0.0f,
+      0.0f, 0.0f, 1.0f,
+      -0.25f, -0.25f,  // 左下
+
+      -0.5f, 0.5f, 0.0f,
+      1.0f, 1.0f, 0.0f,
+      -0.25f, 1.75f // 左上
     )
 
     val indices = intArrayOf(
@@ -118,7 +131,7 @@ class MixTextureRenderer(context: Context) : BaseRender(context) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
     // bitmap 解码
     val bitmap1 = BitmapFactory.decodeResource(context.resources, R.drawable.wooden_container)
-    GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap1, 0)
+    GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap1.reverse(Orientation.Vertical), 0)
     glGenerateMipmap(GL_TEXTURE_2D)
 
     texture2 = createAndBindTexture2D()
@@ -131,7 +144,7 @@ class MixTextureRenderer(context: Context) : BaseRender(context) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
     // bitmap 解码
     val bitmap2 = BitmapFactory.decodeResource(context.resources, R.drawable.awesomeface)
-    GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap2, 0)
+    GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap2.reverse(Orientation.Vertical), 0)
     glGenerateMipmap(GL_TEXTURE_2D)
 
     shader.use()

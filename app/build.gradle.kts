@@ -7,6 +7,12 @@ android {
   namespace = "com.czb.opengl_es"
   compileSdk = 34
 
+  packaging {
+    resources.excludes.add("META-INF/INDEX.LIST")
+    resources.excludes.add("META-INF/linux/x64/org/lwjgl/liblwjgl.so.sha1")
+    resources.excludes.add("META-INF/linux/x64/org/lwjgl/jemalloc/libjemalloc.so.sha1")
+  }
+
   defaultConfig {
     applicationId = "com.czb.opengl_es"
     minSdk = 24
@@ -39,7 +45,7 @@ android {
 
 dependencies {
 
-  implementation("androidx.core:core-ktx:1.9.0")
+  implementation("androidx.core:core-ktx:1.12.0")
   implementation("androidx.appcompat:appcompat:1.6.1")
   implementation("com.google.android.material:material:1.10.0")
   implementation("androidx.constraintlayout:constraintlayout:2.1.4")
@@ -47,4 +53,5 @@ dependencies {
   androidTestImplementation("androidx.test.ext:junit:1.1.5")
   androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
   implementation("io.github.kotlin-graphics:glm:0.9.9.1-12")
+  implementation("io.github.kotlin-graphics:kool:0.9.79")
 }

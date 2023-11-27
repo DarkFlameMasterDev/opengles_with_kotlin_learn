@@ -28,54 +28,54 @@ class Shader private constructor(builder: Builder) {
     GLES32.glUseProgram(program)
   }
 
-  fun setBoolean(name: String?, value: Boolean) {
+  fun setBoolean(name: String, value: Boolean) {
     val location = GLES32.glGetUniformLocation(program, name)
-    checkLocation(location)
+    checkLocation(location, name)
     GLES32.glUniform1i(location, if (value) 1 else 0)
   }
 
-  fun setInt(name: String?, value: Int) {
+  fun setInt(name: String, value: Int) {
     val location = GLES32.glGetUniformLocation(program, name)
-    checkLocation(location)
+    checkLocation(location, name)
     GLES32.glUniform1i(location, value)
   }
 
-  fun setFloat(name: String?, value: Float) {
+  fun setFloat(name: String, value: Float) {
     val location = GLES32.glGetUniformLocation(program, name)
-    checkLocation(location)
+    checkLocation(location, name)
     GLES32.glUniform1f(location, value)
   }
 
-  fun setVec3(name: String?, x: Float, y: Float, z: Float) {
+  fun setVec3(name: String, x: Float, y: Float, z: Float) {
     val location = GLES32.glGetUniformLocation(program, name)
-    checkLocation(location)
+    checkLocation(location, name)
     GLES32.glUniform3f(location, x, y, z)
   }
 
-  fun setVec3(name: String?, vec3: Vec3) {
+  fun setVec3(name: String, vec3: Vec3) {
     val location = GLES32.glGetUniformLocation(program, name)
-    checkLocation(location)
+    checkLocation(location, name)
     GLES32.glUniform3f(location, vec3.x, vec3.y, vec3.z)
   }
 
-  fun setMatrix(name: String?, mat4: Mat4) {
+  fun setMatrix(name: String, mat4: Mat4) {
     val location = GLES32.glGetUniformLocation(program, name)
-    checkLocation(location)
+    checkLocation(location, name)
     val floatBuffer = ByteBuffer //矩阵4x4
       .allocateDirect(4 * 4 * BYTES_PER_FLOAT)
       .order(ByteOrder.nativeOrder())
       .asFloatBuffer()
-    GLES32.glUniformMatrix4fv(location, 1, false, mat4.to(floatBuffer))
+    GLES32.glUniformMatrix4fv(location, 1, false, mat4 to floatBuffer)
   }
 
-  fun setMatrix(name: String?, matrix: FloatArray?) {
+  fun setMatrix(name: String, matrix: FloatArray?) {
     val location = GLES32.glGetUniformLocation(program, name)
-    checkLocation(location)
+    checkLocation(location, name)
     GLES32.glUniformMatrix4fv(location, 1, false, matrix, 0)
   }
 
-  private fun checkLocation(location: Int) {
-    if (location == -1) throw RuntimeException("The name does not correspond to an active uniform variable in program")
+  private fun checkLocation(location: Int, name: String) {
+    if (location == -1) throw RuntimeException("The uniform variable named '$name' cannot be found in your program.")
   }
 
   private fun createShader(type: Int, @RawRes rawId: Int): Int {

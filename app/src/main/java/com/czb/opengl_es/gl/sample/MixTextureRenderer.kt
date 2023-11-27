@@ -55,22 +55,18 @@ class MixTextureRenderer(context: Context) : BaseRender(context) {
 
   override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
     val vertices = floatArrayOf(
-      //  -- 位置 --       -- 颜色 --      -- 纹理坐标 --
+      // 顶点坐标 // 纹理坐标
       0.5f, 0.5f, 0.0f,
-      1.0f, 0.0f, 0.0f,
-      1.75f, 1.75f,  // 右上
+      1.2f, 1.2f, // 右上
 
       0.5f, -0.5f, 0.0f,
-      0.0f, 1.0f, 0.0f,
-      1.75f, -0.25f,  // 右下
+      1.2f, 0.0f, // 右下
 
       -0.5f, -0.5f, 0.0f,
-      0.0f, 0.0f, 1.0f,
-      -0.25f, -0.25f,  // 左下
+      0.0f, 0.0f, // 左下
 
       -0.5f, 0.5f, 0.0f,
-      1.0f, 1.0f, 0.0f,
-      -0.25f, 1.75f // 左上
+      0.0f, 1.2f // 左上
     )
 
     val indices = intArrayOf(
@@ -81,8 +77,8 @@ class MixTextureRenderer(context: Context) : BaseRender(context) {
 
 
     shader = Shader.Builder(context)
-      .setVertexShader(R.raw.vertex_texture)
-      .setFragmentShader(R.raw.fragment_mix)
+      .setVertexShader(R.raw.texture_vertex)
+      .setFragmentShader(R.raw.mix_fragment)
       .buildProgram()
 
     // VAO
@@ -98,12 +94,10 @@ class MixTextureRenderer(context: Context) : BaseRender(context) {
     verticesBuffer.position(0)
     glBufferData(GL_ARRAY_BUFFER, vertices.size * 4, verticesBuffer, GL_STATIC_DRAW)
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, false, 8 * BYTES_PER_FLOAT, 0)
+    glVertexAttribPointer(0, 3, GL_FLOAT, false, 5 * BYTES_PER_FLOAT, 0)
     glEnableVertexAttribArray(0)
-    glVertexAttribPointer(1, 3, GL_FLOAT, false, 8 * BYTES_PER_FLOAT, 3 * BYTES_PER_FLOAT)
+    glVertexAttribPointer(1, 2, GL_FLOAT, false, 5 * BYTES_PER_FLOAT, 3 * BYTES_PER_FLOAT)
     glEnableVertexAttribArray(1)
-    glVertexAttribPointer(2, 2, GL_FLOAT, false, 8 * BYTES_PER_FLOAT, 6 * BYTES_PER_FLOAT)
-    glEnableVertexAttribArray(2)
 
     // EBO
     createAndBindEBO(1)
@@ -115,8 +109,8 @@ class MixTextureRenderer(context: Context) : BaseRender(context) {
     indicesBuffer.position(0)
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size * 4, indicesBuffer, GL_STATIC_DRAW)
 
-    unBindVAO()
     unBindVBO()
+    unBindVAO()
     unBindEBO()
 
     // texture

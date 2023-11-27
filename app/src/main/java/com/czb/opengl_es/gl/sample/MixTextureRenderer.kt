@@ -1,6 +1,7 @@
 package com.czb.opengl_es.gl.sample
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.opengl.GLES32.GL_ARRAY_BUFFER
 import android.opengl.GLES32.GL_CLAMP_TO_BORDER
@@ -126,6 +127,8 @@ class MixTextureRenderer(context: Context) : BaseRender(context) {
     // bitmap 解码
     val bitmap1 = BitmapFactory.decodeResource(context.resources, R.drawable.wooden_container)
     GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap1.reverse(Orientation.Vertical), 0)
+//    val emptyBitmap = Bitmap.createBitmap(bitmap1.width, bitmap1.height, Bitmap.Config.ARGB_8888)
+//    GLUtils.texImage2D(GL_TEXTURE_2D, 0, emptyBitmap, 0)
     glGenerateMipmap(GL_TEXTURE_2D)
 
     texture2 = createAndBindTexture2D()

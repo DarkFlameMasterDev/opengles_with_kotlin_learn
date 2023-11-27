@@ -123,9 +123,8 @@ class TextureRenderer(context: Context) : BaseRender(context) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
     // bitmap 解码
-    val bitmap1 = BitmapFactory.decodeResource(context.resources, R.drawable.awesomeface)
-    val bitmap1Reverse = bitmap1.reverse(Orientation.Vertical)
-    GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap1Reverse, 0)
+    val bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.awesomeface)
+    GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap.reverse(Orientation.Vertical), 0)
     glGenerateMipmap(GL_TEXTURE_2D)
   }
 

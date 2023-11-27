@@ -48,10 +48,12 @@
           android:text="混合纹理" />
 
       <Button
+          android:id="@+id/btn_transform_activity"
           android:layout_width="200dp"
           android:layout_height="80dp"
           android:layout_gravity="center_horizontal"
-          android:layout_marginTop="30dp" />
+          android:layout_marginTop="30dp"
+          android:text="简单的矩阵变换"/>
 
       <Button
           android:layout_width="200dp"

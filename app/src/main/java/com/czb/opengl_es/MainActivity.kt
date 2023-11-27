@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.czb.opengl_es.activities.MixTextureActivity
 import com.czb.opengl_es.activities.TextureActivity
+import com.czb.opengl_es.activities.TransformActivity
 import com.czb.opengl_es.activities.TriangleActivity
 import com.czb.opengl_es.activities.WindowActivity
 import com.czb.opengl_es.databinding.ActivityMainBinding
@@ -30,6 +31,9 @@ class MainActivity : AppCompatActivity() {
     }
     mainBinding.btnMixTextureActivity.setOnClickListener {
       startActivityByIntent(MixTextureActivity::class.java)
+    }
+    mainBinding.btnTransformActivity.setOnClickListener {
+      startActivityByIntent(TransformActivity::class.java)
     }
   }
 

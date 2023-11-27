@@ -42,8 +42,8 @@ class TriangleRenderer(context: Context) : BaseRender(context) {
     log("onSurfaceCreated() called with: thread = [${Thread.currentThread()}]")
 
     shader = Shader.Builder(context)
-      .setVertexShader(R.raw.vertex_triangle)
-      .setFragmentShader(R.raw.fragment_triangle)
+      .setVertexShader(R.raw.triangle_vertex)
+      .setFragmentShader(R.raw.triangle_fragment)
       .buildProgram()
 
     vao = createAndBindVAO(1)

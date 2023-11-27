@@ -60,16 +60,16 @@ class TextureRenderer(context: Context) : BaseRender(context) {
     val vertices = floatArrayOf(
       // 顶点坐标 // 纹理坐标
       0.5f, 0.5f, 0.0f,
-      1.0f, 1.0f, // 右上
+      1.2f, 1.2f, // 右上
 
       0.5f, -0.5f, 0.0f,
-      1.0f, 0.0f, // 右下
+      1.2f, 0.0f, // 右下
 
       -0.5f, -0.5f, 0.0f,
       0.0f, 0.0f, // 左下
 
       -0.5f, 0.5f, 0.0f,
-      0.0f, 1.0f // 左上
+      0.0f, 1.2f // 左上
     )
 
     val indices = intArrayOf(

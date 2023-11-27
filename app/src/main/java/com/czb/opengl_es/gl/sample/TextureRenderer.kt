@@ -126,6 +126,7 @@ class TextureRenderer(context: Context) : BaseRender(context) {
     val bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.awesomeface)
     GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap.reverse(Orientation.Vertical), 0)
     glGenerateMipmap(GL_TEXTURE_2D)
+    bitmap.recycle()
   }
 
   override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {

@@ -1,7 +1,6 @@
 package com.czb.opengl_es.gl.sample
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.opengl.GLES32.GL_ARRAY_BUFFER
 import android.opengl.GLES32.GL_CLAMP_TO_BORDER
@@ -130,6 +129,7 @@ class MixTextureRenderer(context: Context) : BaseRender(context) {
 //    val emptyBitmap = Bitmap.createBitmap(bitmap1.width, bitmap1.height, Bitmap.Config.ARGB_8888)
 //    GLUtils.texImage2D(GL_TEXTURE_2D, 0, emptyBitmap, 0)
     glGenerateMipmap(GL_TEXTURE_2D)
+    bitmap1.recycle()
 
     texture2 = createAndBindTexture2D()
     // 环绕方式
@@ -143,6 +143,7 @@ class MixTextureRenderer(context: Context) : BaseRender(context) {
     val bitmap2 = BitmapFactory.decodeResource(context.resources, R.drawable.awesomeface)
     GLUtils.texImage2D(GL_TEXTURE_2D, 0, bitmap2.reverse(Orientation.Vertical), 0)
     glGenerateMipmap(GL_TEXTURE_2D)
+    bitmap2.recycle()
 
     shader.use()
     shader.setInt("texture1", 0)
@@ -162,10 +163,10 @@ class MixTextureRenderer(context: Context) : BaseRender(context) {
     glActiveTexture(GL_TEXTURE1)
     glBindTexture(GL_TEXTURE_2D, texture2[0])
 
+    shader.use()
     shader.setFloat("mixValue", mixValue)
     log("mixValue = $mixValue")
 
-    shader.use()
     glBindVertexArray(vao[0])
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0)
     unBindVAO()

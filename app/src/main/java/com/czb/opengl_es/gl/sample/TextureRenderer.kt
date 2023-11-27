@@ -1,9 +1,7 @@
 package com.czb.opengl_es.gl.sample
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Matrix
 import android.opengl.GLES32.GL_ARRAY_BUFFER
 import android.opengl.GLES32.GL_CLAMP_TO_BORDER
 import android.opengl.GLES32.GL_COLOR_BUFFER_BIT
@@ -50,27 +48,28 @@ class TextureRenderer(context: Context) : BaseRender(context) {
 
   private lateinit var vao: IntArray
   private lateinit var shader: Shader
-  private lateinit var texture1: IntArray
-  private lateinit var texture2: IntArray
+  private lateinit var texture: IntArray
 
   override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
+    // 1. shader & program
+    shader = Shader.Builder(context)
+      .setVertexShader(R.raw.texture_vertex)
+      .setFragmentShader(R.raw.texture_fragment)
+      .buildProgram()
+
     val vertices = floatArrayOf(
-      //  -- 位置 --       -- 颜色 --      -- 纹理坐标 --
+      // 顶点坐标 // 纹理坐标
       0.5f, 0.5f, 0.0f,
-      1.0f, 0.0f, 0.0f,
-      1.75f, 1.75f,  // 右上
+      1.0f, 1.0f, // 右上
 
       0.5f, -0.5f, 0.0f,
-      0.0f, 1.0f, 0.0f,
-      1.75f, -0.25f,  // 右下
+      1.0f, 0.0f, // 右下
 
       -0.5f, -0.5f, 0.0f,
-      0.0f, 0.0f, 1.0f,
-      -0.25f, -0.25f,  // 左下
+      0.0f, 0.0f, // 左下
 
       -0.5f, 0.5f, 0.0f,
-      1.0f, 1.0f, 0.0f,
-      -0.25f, 1.75f // 左上
+      0.0f, 1.0f // 左上
     )
 
     val indices = intArrayOf(
@@ -79,33 +78,27 @@ class TextureRenderer(context: Context) : BaseRender(context) {
       1, 2, 3 // 第二个三角形
     )
 
-
-    shader = Shader.Builder(context)
-      .setVertexShader(R.raw.vertex_texture)
-      .setFragmentShader(R.raw.fragment_texture)
-      .buildProgram()
-
-    // VAO
-    // VBO
+    // 2.先绑 VAO
+    // 3.再绑 VBO
     vao = createAndBindVAO(1)
     createAndBindVBO(1)
 
+    // 4.VBO Buffer 填充
     val verticesBuffer = ByteBuffer
       .allocateDirect(vertices.size * BYTES_PER_FLOAT)
       .order(ByteOrder.nativeOrder())
       .asFloatBuffer()
       .put(vertices)
     verticesBuffer.position(0)
-    glBufferData(GL_ARRAY_BUFFER, vertices.size * 4, verticesBuffer, GL_STATIC_DRAW)
+    glBufferData(GL_ARRAY_BUFFER, vertices.size * BYTES_PER_FLOAT, verticesBuffer, GL_STATIC_DRAW)
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, false, 8 * BYTES_PER_FLOAT, 0)
+    // 5.设置 Attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, false, 5 * BYTES_PER_FLOAT, 0)
     glEnableVertexAttribArray(0)
-    glVertexAttribPointer(1, 3, GL_FLOAT, false, 8 * BYTES_PER_FLOAT, 3 * BYTES_PER_FLOAT)
+    glVertexAttribPointer(1, 2, GL_FLOAT, false, 5 * BYTES_PER_FLOAT, 3 * BYTES_PER_FLOAT)
     glEnableVertexAttribArray(1)
-    glVertexAttribPointer(2, 2, GL_FLOAT, false, 8 * BYTES_PER_FLOAT, 6 * BYTES_PER_FLOAT)
-    glEnableVertexAttribArray(2)
 
-    // EBO
+    // 6.EBO
     createAndBindEBO(1)
     val indicesBuffer = ByteBuffer
       .allocateDirect(indices.size * BYTES_PER_INT)
@@ -115,13 +108,13 @@ class TextureRenderer(context: Context) : BaseRender(context) {
     indicesBuffer.position(0)
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size * 4, indicesBuffer, GL_STATIC_DRAW)
 
-    unBindVAO()
     unBindVBO()
+    unBindVAO()
     unBindEBO()
 
     // texture
     val borderColor = floatArrayOf(0.3f, 0.2f, 1.0f, 1.0f)
-    texture1 = createAndBindTexture2D()
+    texture = createAndBindTexture2D()
     // 环绕方式
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER)
@@ -145,7 +138,7 @@ class TextureRenderer(context: Context) : BaseRender(context) {
     glClear(GL_COLOR_BUFFER_BIT)
 
     glActiveTexture(GL_TEXTURE0)
-    glBindTexture(GL_TEXTURE_2D, texture1[0])
+    glBindTexture(GL_TEXTURE_2D, texture[0])
 
     shader.use()
     glBindVertexArray(vao[0])

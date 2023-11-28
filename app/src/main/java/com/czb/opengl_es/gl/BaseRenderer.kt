@@ -6,7 +6,7 @@ import android.opengl.GLSurfaceView
 import android.view.MotionEvent
 import glm_.vec3.Vec3
 
-abstract class BaseRender(protected var context: Context) : GLSurfaceView.Renderer {
+abstract class BaseRenderer(protected var context: Context) : GLSurfaceView.Renderer {
   private var camera: Camera = Camera(Vec3(0.0f, 0.0f, 3.0f))
   protected fun createAndBindVAO(size: Int): IntArray {
     val vao = IntArray(size)

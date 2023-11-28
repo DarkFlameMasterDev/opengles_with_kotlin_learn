@@ -2,12 +2,11 @@ package com.czb.opengl_es.gl.sample
 
 import android.content.Context
 import android.opengl.GLES32
-import android.opengl.GLSurfaceView
-import com.czb.opengl_es.gl.BaseRender
+import com.czb.opengl_es.gl.BaseRenderer
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
-class WindowRenderer(context: Context) : BaseRender(context) {
+class WindowRenderer(context: Context) : BaseRenderer(context) {
   override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
 
   }

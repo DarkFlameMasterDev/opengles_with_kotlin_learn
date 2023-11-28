@@ -1,16 +1,15 @@
 package com.czb.opengl_es.gl.sample
 
 import android.content.Context
-import android.opengl.GLSurfaceView
 import android.util.AttributeSet
+import com.czb.opengl_es.gl.BaseGLSurfaceView
 
-class TextureGLSurfaceView : GLSurfaceView {
+class TextureGLSurfaceView : BaseGLSurfaceView {
 
   constructor(context: Context) : this(context, null)
-  constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-    setEGLContextClientVersion(3)
-    setEGLConfigChooser(8, 8, 8, 8, 16, 8)
-    setRenderer(TextureRenderer(context))
-    renderMode = RENDERMODE_WHEN_DIRTY
+  constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+
+  init {
+    setRendererConfig(TextureRenderer(context), RENDERMODE_WHEN_DIRTY)
   }
 }

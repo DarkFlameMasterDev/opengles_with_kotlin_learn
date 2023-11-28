@@ -1,16 +1,15 @@
 package com.czb.opengl_es.gl.sample
 
 import android.content.Context
-import android.opengl.GLSurfaceView
 import android.util.AttributeSet
+import com.czb.opengl_es.gl.BaseGLSurfaceView
 
-class TriangleGLSurfaceView : GLSurfaceView {
+class TriangleGLSurfaceView : BaseGLSurfaceView {
 
   constructor(context: Context) : this(context, null)
-  constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-    setEGLContextClientVersion(3)
-    setEGLConfigChooser(8, 8, 8, 8, 16, 8)
-    setRenderer(TriangleRenderer(context))
-    renderMode = RENDERMODE_WHEN_DIRTY
+  constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+
+  init {
+    setRendererConfig(TriangleRenderer(context), RENDERMODE_WHEN_DIRTY)
   }
 }

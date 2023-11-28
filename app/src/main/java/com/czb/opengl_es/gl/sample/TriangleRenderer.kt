@@ -16,7 +16,7 @@ import android.opengl.GLES32.glDrawArrays
 import android.opengl.GLES32.glViewport
 
 import com.czb.opengl_es.R
-import com.czb.opengl_es.gl.BaseRender
+import com.czb.opengl_es.gl.BaseRenderer
 import com.czb.opengl_es.gl.Shader
 import com.czb.opengl_es.log
 import java.nio.ByteBuffer
@@ -28,7 +28,7 @@ import javax.microedition.khronos.opengles.GL10
  * @author wuzhanqiao
  * @date 2022/4/12.
  */
-class TriangleRenderer(context: Context) : BaseRender(context) {
+class TriangleRenderer(context: Context) : BaseRenderer(context) {
   private var vertices = floatArrayOf(
     -0.5f, -0.5f, 0.0f,
     0.5f, -0.5f, 0.0f,

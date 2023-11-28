@@ -35,7 +35,7 @@ import android.opengl.GLES32.glVertexAttribPointer
 import android.opengl.GLES32.glViewport
 import android.opengl.GLUtils
 import com.czb.opengl_es.R
-import com.czb.opengl_es.gl.BaseRender
+import com.czb.opengl_es.gl.BaseRenderer
 import com.czb.opengl_es.gl.Shader
 import com.czb.opengl_es.gl.utils.Orientation
 import com.czb.opengl_es.gl.utils.reverse
@@ -45,7 +45,7 @@ import java.nio.ByteOrder
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
-class MixTextureRenderer(context: Context) : BaseRender(context) {
+class MixTextureRenderer(context: Context) : BaseRenderer(context) {
 
   private lateinit var vao: IntArray
   private lateinit var shader: Shader

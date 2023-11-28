@@ -1,10 +1,10 @@
 package com.czb.opengl_es.gl.sample
 
 import android.content.Context
-import android.opengl.GLSurfaceView
 import android.util.AttributeSet
+import com.czb.opengl_es.gl.BaseGLSurfaceView
 
-class MixTextureGLSurfaceView : GLSurfaceView {
+class MixTextureGLSurfaceView : BaseGLSurfaceView {
 
   var mixValue = 0.5f
     set(value) {
@@ -14,11 +14,10 @@ class MixTextureGLSurfaceView : GLSurfaceView {
   private val mixTextureRenderer = MixTextureRenderer(context)
 
   constructor(context: Context) : this(context, null)
-  constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-    setEGLContextClientVersion(3)
-    setEGLConfigChooser(8, 8, 8, 8, 16, 8)
-    setRenderer(mixTextureRenderer)
-    renderMode = RENDERMODE_CONTINUOUSLY
+  constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+
+  init {
+    setRendererConfig(mixTextureRenderer, RENDERMODE_CONTINUOUSLY)
   }
 
   private fun changeRendererMixValue() {

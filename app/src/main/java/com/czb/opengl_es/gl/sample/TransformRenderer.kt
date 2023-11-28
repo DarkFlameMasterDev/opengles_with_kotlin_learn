@@ -139,7 +139,6 @@ class TransformRenderer(context: Context) : BaseRender(context) {
   private var translateY = 0f
   private var translateZ = 0f
   private var transform = Mat4(1.0f)
-  private var angle = 0f
   override fun onDrawFrame(gl: GL10?) {
     GLES32.glClearColor(0.2f, 0.8f, 0.8f, 1.0f)
     GLES32.glClear(GLES32.GL_COLOR_BUFFER_BIT)
@@ -160,7 +159,7 @@ class TransformRenderer(context: Context) : BaseRender(context) {
     }
     transform = Mat4(1.0f)
     transform = glm.translate(transform, Vec3(translateX, translateY, translateZ))
-    angle = (System.currentTimeMillis() % 6283) / 1000f
+    val angle = (System.currentTimeMillis() % 6283) / 1000f
     log("System.currentTimeMillis() = ${System.currentTimeMillis()} angle =  $angle")
     transform = glm.rotate(transform, angle, Vec3(0, 0, 1))
 
@@ -169,6 +168,19 @@ class TransformRenderer(context: Context) : BaseRender(context) {
 
     GLES32.glBindVertexArray(vao[0])
     GLES32.glDrawElements(GLES32.GL_TRIANGLES, 6, GLES32.GL_UNSIGNED_INT, 0)
+
+    transform = Mat4(1.0f)
+    transform = glm.translate(transform, Vec3(-0.5, 0.5f, 0.0f))
+    val scaleAmount = System.currentTimeMillis() % 10000 / 10000f
+    log("System.currentTimeMillis() = ${System.currentTimeMillis()} scaleAmount = $scaleAmount")
+    transform = glm.scale(transform, Vec3(scaleAmount, scaleAmount, scaleAmount))
+
+    shader.use()
+    shader.setMatrix("transform", transform)
+
+    GLES32.glBindVertexArray(vao[0])
+    GLES32.glDrawElements(GLES32.GL_TRIANGLES, 6, GLES32.GL_UNSIGNED_INT, 0)
+
     unBindVAO()
   }
 }

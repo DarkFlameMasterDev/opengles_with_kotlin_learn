@@ -3,6 +3,7 @@ package com.czb.opengl_es
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.czb.opengl_es.activities.CubeActivity
 import com.czb.opengl_es.activities.MixTextureActivity
 import com.czb.opengl_es.activities.TextureActivity
 import com.czb.opengl_es.activities.TransformActivity
@@ -34,6 +35,9 @@ class MainActivity : AppCompatActivity() {
     }
     mainBinding.btnTransformActivity.setOnClickListener {
       startActivityByIntent(TransformActivity::class.java)
+    }
+    mainBinding.btnCubeActivity.setOnClickListener {
+      startActivityByIntent(CubeActivity::class.java)
     }
   }
 

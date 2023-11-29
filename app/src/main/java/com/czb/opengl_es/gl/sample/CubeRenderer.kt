@@ -21,6 +21,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
+import kotlin.random.Random
 
 class CubeRenderer(context: Context) : BaseRenderer(context) {
   private lateinit var vao: IntArray
@@ -33,6 +34,7 @@ class CubeRenderer(context: Context) : BaseRenderer(context) {
   var height = 0
 
   private lateinit var cubePositions: Array<Vec3>
+  private lateinit var rotateVec3: Array<Vec3>
 
   override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
     val vertices = floatArrayOf(
@@ -91,6 +93,20 @@ class CubeRenderer(context: Context) : BaseRenderer(context) {
       Vec3(1.5f, 2.0f, -2.5f),
       Vec3(1.5f, 0.2f, -1.5f),
       Vec3(-1.3f, 1.0f, -1.5f)
+    )
+
+    rotateVec3 = arrayOf(
+      Vec3(Random.nextFloat(), Random.nextFloat(), Random.nextFloat()),
+      Vec3(Random.nextFloat(), Random.nextFloat(), Random.nextFloat()),
+      Vec3(Random.nextFloat(), Random.nextFloat(), Random.nextFloat()),
+      Vec3(Random.nextFloat(), Random.nextFloat(), Random.nextFloat()),
+      Vec3(Random.nextFloat(), Random.nextFloat(), Random.nextFloat()),
+      Vec3(Random.nextFloat(), Random.nextFloat(), Random.nextFloat()),
+      Vec3(Random.nextFloat(), Random.nextFloat(), Random.nextFloat()),
+      Vec3(Random.nextFloat(), Random.nextFloat(), Random.nextFloat()),
+      Vec3(Random.nextFloat(), Random.nextFloat(), Random.nextFloat()),
+      Vec3(Random.nextFloat(), Random.nextFloat(), Random.nextFloat()),
+      Vec3(Random.nextFloat(), Random.nextFloat(), Random.nextFloat())
     )
 
     glEnable(GL_DEPTH_TEST)
@@ -199,7 +215,7 @@ class CubeRenderer(context: Context) : BaseRenderer(context) {
     for (i in 0..<10) {
       var model = Mat4(1.0f)
       model = glm.translate(model, cubePositions[i])
-      model = glm.rotate(model, (System.currentTimeMillis() % 6283) / 1000f, Vec3(0.5f, 1.0f, 0.0f))
+      model = glm.rotate(model, (System.currentTimeMillis() % 6283) / 1000f, rotateVec3[i])
       shader.setMatrix("model", model)
       glDrawArrays(GL_TRIANGLES, 0, 36)
     }

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.CameraActivity">
+
+  <com.czb.opengl_es.gl.sample.CameraGLSurfaceView
+      android:id="@+id/cameraGLSurfaceView"
+      android:layout_width="400dp"
+      android:layout_height="400dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+
+  <Button
+      android:id="@+id/up"
+      android:layout_width="85dp"
+      android:layout_height="40dp"
+      android:text="up"
+      app:layout_constraintBottom_toTopOf="@+id/down"
+      app:layout_constraintEnd_toEndOf="@+id/cameraGLSurfaceView"
+      app:layout_constraintStart_toStartOf="@+id/cameraGLSurfaceView"
+      app:layout_constraintTop_toBottomOf="@+id/cameraGLSurfaceView" />
+
+  <Button
+      android:id="@+id/right"
+      android:layout_width="85dp"
+      android:layout_height="40dp"
+      android:text="right"
+      app:layout_constraintBottom_toBottomOf="@+id/down"
+      app:layout_constraintEnd_toEndOf="@+id/cameraGLSurfaceView"
+      app:layout_constraintStart_toEndOf="@+id/up"
+      app:layout_constraintTop_toTopOf="@+id/up" />
+
+  <Button
+      android:id="@+id/left"
+      android:layout_width="85dp"
+      android:layout_height="40dp"
+      android:text="left"
+      app:layout_constraintBottom_toBottomOf="@+id/down"
+      app:layout_constraintEnd_toStartOf="@+id/up"
+      app:layout_constraintStart_toStartOf="@+id/cameraGLSurfaceView"
+      app:layout_constraintTop_toTopOf="@+id/up" />
+
+  <Button
+      android:id="@+id/down"
+      android:layout_width="85dp"
+      android:layout_height="40dp"
+      android:text="down"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="@+id/up"
+      app:layout_constraintStart_toStartOf="@+id/up"
+      app:layout_constraintTop_toBottomOf="@+id/up" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

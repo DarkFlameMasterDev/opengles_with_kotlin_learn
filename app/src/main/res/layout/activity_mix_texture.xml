@@ -7,7 +7,7 @@
     tools:context=".activities.MixTextureActivity">
 
   <com.czb.opengl_es.gl.sample.MixTextureGLSurfaceView
-      android:id="@+id/textureGLSurfaceView"
+      android:id="@+id/mixTextureGLSurfaceView"
       android:layout_width="400dp"
       android:layout_height="400dp"
       app:layout_constraintBottom_toBottomOf="parent"
@@ -23,7 +23,7 @@
       android:text="up_mix"
       app:layout_constraintEnd_toStartOf="@+id/down_mix"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/textureGLSurfaceView" />
+      app:layout_constraintTop_toBottomOf="@+id/mixTextureGLSurfaceView" />
 
   <Button
       android:id="@+id/down_mix"

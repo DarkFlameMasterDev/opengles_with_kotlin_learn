@@ -55,15 +55,33 @@ class CameraActivity : AppCompatActivity() {
   private fun longTouch(event: MotionEvent, v: View?) {
     when (event.action) {
       MotionEvent.ACTION_DOWN -> {
-        startPrint(v as Button)
+        startPress(v as Button)
       }
 
       MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-        stopPrinting(v as Button)
+        stopPress(v as Button)
       }
     }
   }
 
+  private fun startPress(btn: Button) {
+    pressStateSet(btn, true)
+    handler.post(object : Runnable {
+      override fun run() {
+        log("isPressing = ${pressStateGet(btn)} time second = ${System.currentTimeMillis() / 1000 % 3600}")
+        if (pressStateGet(btn)) {
+          btnActionMap[btn.id]?.let {
+            cameraBinding.cameraGLSurfaceView.processIn(it)
+          }
+          handler.postDelayed(this, 500)
+        }
+      }
+    })
+  }
+
+  private fun stopPress(btn: Button) {
+    pressStateSet(btn, false)
+  }
 
   @Volatile
   private var isUpPressing = AtomicBoolean(false)
@@ -79,21 +97,13 @@ class CameraActivity : AppCompatActivity() {
 
   private fun pressStateSet(btn: Button, state: Boolean) {
     when (btn.id) {
-      cameraBinding.up.id -> {
-        isUpPressing.set(state)
-      }
+      cameraBinding.up.id -> isUpPressing.set(state)
 
-      cameraBinding.down.id -> {
-        isDownPressing.set(state)
-      }
+      cameraBinding.down.id -> isDownPressing.set(state)
 
-      cameraBinding.left.id -> {
-        isLeftPressing.set(state)
-      }
+      cameraBinding.left.id -> isLeftPressing.set(state)
 
-      cameraBinding.right.id -> {
-        isRightPressing.set(state)
-      }
+      cameraBinding.right.id -> isRightPressing.set(state)
     }
   }
 
@@ -103,24 +113,5 @@ class CameraActivity : AppCompatActivity() {
     cameraBinding.left.id -> isLeftPressing.get()
     cameraBinding.right.id -> isRightPressing.get()
     else -> false
-  }
-
-  private fun startPrint(btn: Button) {
-    pressStateSet(btn, true)
-    handler.post(object : Runnable {
-      override fun run() {
-        log("isPressing = ${pressStateGet(btn)} time second = ${System.currentTimeMillis() / 1000 % 3600}")
-        if (btn.id in btnActionMap.keys) {
-          cameraBinding.cameraGLSurfaceView.processIn(btnActionMap[btn.id]!!)
-        }
-        if (pressStateGet(btn)) {
-          handler.postDelayed(this, 500)
-        }
-      }
-    })
-  }
-
-  private fun stopPrinting(btn: Button) {
-    pressStateSet(btn, false)
   }
 }

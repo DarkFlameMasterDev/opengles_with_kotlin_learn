@@ -54,4 +54,6 @@ dependencies {
   androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
   implementation("io.github.kotlin-graphics:glm:0.9.9.1-12")
   implementation("io.github.kotlin-graphics:kool:0.9.79")
+
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 }

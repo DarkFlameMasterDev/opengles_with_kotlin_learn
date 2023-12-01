@@ -67,8 +67,14 @@ class CameraActivity : AppCompatActivity() {
 
   @Volatile
   private var isUpPressing = AtomicBoolean(false)
+
+  @Volatile
   private var isDownPressing = AtomicBoolean(false)
+
+  @Volatile
   private var isLeftPressing = AtomicBoolean(false)
+
+  @Volatile
   private var isRightPressing = AtomicBoolean(false)
 
   private fun pressStateSet(btn: Button, state: Boolean) {

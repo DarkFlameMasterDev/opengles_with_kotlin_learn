@@ -2,7 +2,6 @@ package com.czb.opengl_es.gl.sample
 
 import android.content.Context
 import android.graphics.BitmapFactory
-import android.opengl.GLES20
 import android.opengl.GLES32
 import android.opengl.GLUtils
 import com.czb.opengl_es.R
@@ -232,7 +231,7 @@ class CameraRenderer(context: Context) : BaseRenderer(context) {
       model = glm.translate(model, cubePositions[i])
       model = glm.rotate(model, (System.currentTimeMillis() % 6283) / 1000f, rotateVec3[i])
       shader.setMatrix("model", model)
-      GLES20.glDrawArrays(GLES32.GL_TRIANGLES, 0, 36)
+      GLES32.glDrawArrays(GLES32.GL_TRIANGLES, 0, 36)
     }
     unBindVAO()
   }

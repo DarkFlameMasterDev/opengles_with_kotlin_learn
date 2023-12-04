@@ -2,7 +2,7 @@ package com.czb.opengl_es.gl.sample
 
 import android.content.Context
 import android.graphics.BitmapFactory
-import android.opengl.GLES20.glDrawArrays
+import android.opengl.GLES32.glDrawArrays
 import android.opengl.GLES32.GL_DEPTH_TEST
 import android.opengl.GLES32.glEnable
 import android.opengl.GLES32

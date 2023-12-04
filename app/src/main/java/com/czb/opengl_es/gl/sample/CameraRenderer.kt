@@ -10,6 +10,7 @@ import com.czb.opengl_es.gl.Direction
 import com.czb.opengl_es.gl.Shader
 import com.czb.opengl_es.gl.utils.Orientation
 import com.czb.opengl_es.gl.utils.reverse
+import com.czb.opengl_es.log
 import glm_.glm
 import glm_.mat4x4.Mat4
 import glm_.vec3.Vec3
@@ -31,6 +32,9 @@ class CameraRenderer(context: Context) : BaseRenderer(context) {
 
   private lateinit var cubePositions: Array<Vec3>
   private lateinit var rotateVec3: Array<Vec3>
+
+  private var deltaTime = 0
+  private var lastFrameTime = 0
 
   override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
     val vertices = floatArrayOf(
@@ -191,6 +195,10 @@ class CameraRenderer(context: Context) : BaseRenderer(context) {
   private var cameraUp = Vec3(0.0f, 1.0f, 0.0f)
 
   override fun onDrawFrame(gl: GL10?) {
+    val currentTime = System.currentTimeMillis() / 10
+    deltaTime = (currentTime - lastFrameTime).toInt()
+    lastFrameTime = currentTime.toInt()
+    log("currentTime = $currentTime ；deltaTime: $deltaTime ；lastFrameTime = $lastFrameTime")
     GLES32.glClearColor(0.2f, 0.8f, 0.8f, 1.0f)
     GLES32.glClear(GLES32.GL_COLOR_BUFFER_BIT or GLES32.GL_DEPTH_BUFFER_BIT)
 
@@ -237,7 +245,8 @@ class CameraRenderer(context: Context) : BaseRenderer(context) {
   }
 
   fun processInput(direction: Direction) {
-    val cameraSpeed = 0.05f
+    val cameraSpeed = deltaTime * 0.025f
+    log("cameraSpeed = $cameraSpeed ，deltaTime = $deltaTime")
     cameraPos = when (direction) {
       Direction.UP -> cameraPos + cameraFront * cameraSpeed
       Direction.DOWN -> cameraPos - cameraFront * cameraSpeed

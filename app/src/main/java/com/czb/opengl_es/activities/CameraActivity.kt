@@ -126,7 +126,7 @@ class CameraActivity : AppCompatActivity() {
             isLeftPressing -> cameraBinding.cameraGLSurfaceView.processIn(Direction.LEFT)
             isRightPressing -> cameraBinding.cameraGLSurfaceView.processIn(Direction.RIGHT)
           }
-          sleep(500)
+          sleep(16)
         }
       }
     }

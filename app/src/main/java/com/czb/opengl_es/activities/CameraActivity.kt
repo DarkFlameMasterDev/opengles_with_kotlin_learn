@@ -10,18 +10,18 @@ import androidx.appcompat.app.AppCompatActivity
 import com.czb.opengl_es.databinding.ActivityCameraBinding
 import com.czb.opengl_es.gl.Direction
 import com.czb.opengl_es.log
-import java.util.concurrent.atomic.AtomicBoolean
 
 class CameraActivity : AppCompatActivity() {
 
   private lateinit var cameraBinding: ActivityCameraBinding
   private lateinit var btnActionMap: Map<Int, Direction>
-  private lateinit var handler: Handler
+  private lateinit var childThread: ChildThread
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     cameraBinding = ActivityCameraBinding.inflate(layoutInflater)
     setContentView(cameraBinding.root)
-    handler = Handler(mainLooper)
+    childThread = ChildThread()
+    childThread.start()
     initView()
   }
 
@@ -65,53 +65,70 @@ class CameraActivity : AppCompatActivity() {
   }
 
   private fun startPress(btn: Button) {
-    pressStateSet(btn, true)
-    handler.post(object : Runnable {
-      override fun run() {
-        log("isPressing = ${pressStateGet(btn)} time second = ${System.currentTimeMillis() / 1000 % 3600}")
-        if (pressStateGet(btn)) {
-          btnActionMap[btn.id]?.let {
-            cameraBinding.cameraGLSurfaceView.processIn(it)
-          }
-          handler.postDelayed(this, 500)
-        }
+    when (btn) {
+      cameraBinding.up -> {
+        childThread.isUpPressing = true
       }
-    })
-  }
 
-  private fun stopPress(btn: Button) {
-    pressStateSet(btn, false)
-  }
+      cameraBinding.down -> {
+        childThread.isDownPressing = true
+      }
 
-  @Volatile
-  private var isUpPressing = AtomicBoolean(false)
+      cameraBinding.left -> {
+        childThread.isLeftPressing = true
+      }
 
-  @Volatile
-  private var isDownPressing = AtomicBoolean(false)
-
-  @Volatile
-  private var isLeftPressing = AtomicBoolean(false)
-
-  @Volatile
-  private var isRightPressing = AtomicBoolean(false)
-
-  private fun pressStateSet(btn: Button, state: Boolean) {
-    when (btn.id) {
-      cameraBinding.up.id -> isUpPressing.set(state)
-
-      cameraBinding.down.id -> isDownPressing.set(state)
-
-      cameraBinding.left.id -> isLeftPressing.set(state)
-
-      cameraBinding.right.id -> isRightPressing.set(state)
+      cameraBinding.right -> {
+        childThread.isRightPressing = true
+      }
     }
   }
 
-  private fun pressStateGet(btn: Button) = when (btn.id) {
-    cameraBinding.up.id -> isUpPressing.get()
-    cameraBinding.down.id -> isDownPressing.get()
-    cameraBinding.left.id -> isLeftPressing.get()
-    cameraBinding.right.id -> isRightPressing.get()
-    else -> false
+  private fun stopPress(btn: Button) {
+    when (btn) {
+      cameraBinding.up -> {
+        childThread.isUpPressing = false
+      }
+
+      cameraBinding.down -> {
+        childThread.isDownPressing = false
+      }
+
+      cameraBinding.left -> {
+        childThread.isLeftPressing = false
+      }
+
+      cameraBinding.right -> {
+        childThread.isRightPressing = false
+      }
+    }
+  }
+
+  inner class ChildThread : Thread() {
+
+    @Volatile
+    var isUpPressing = false
+
+    @Volatile
+    var isDownPressing = false
+
+    @Volatile
+    var isLeftPressing = false
+
+    @Volatile
+    var isRightPressing = false
+    override fun run() {
+      while (true) {
+        if (isUpPressing || isDownPressing || isLeftPressing || isRightPressing) {
+          when {
+            isUpPressing -> cameraBinding.cameraGLSurfaceView.processIn(Direction.UP)
+            isDownPressing -> cameraBinding.cameraGLSurfaceView.processIn(Direction.DOWN)
+            isLeftPressing -> cameraBinding.cameraGLSurfaceView.processIn(Direction.LEFT)
+            isRightPressing -> cameraBinding.cameraGLSurfaceView.processIn(Direction.RIGHT)
+          }
+          sleep(500)
+        }
+      }
+    }
   }
 }
